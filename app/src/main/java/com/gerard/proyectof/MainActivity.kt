@@ -23,8 +23,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.gerard.proyectof.entities.AppDatabase
 import com.gerard.proyectof.ui.theme.ProyectofTheme
+import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.currentCoroutineContext
+import kotlin.concurrent.thread
 
+var db: AppDatabase? = null
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -32,6 +37,7 @@ class MainActivity : ComponentActivity() {
         setContent {
             ProyectofTheme {
                 ComponentPreview()
+                db = AppDatabase.getDatabase(this)
             }
         }
     }
@@ -46,6 +52,7 @@ fun ComponentPreview (){
 
 @Composable
 fun ComponentList (){
+
     LazyColumn(modifier = Modifier
         .fillMaxSize()
         .background(Color.LightGray),
@@ -119,9 +126,10 @@ fun Component (){
 
 @Composable
 fun ComponentText (expanded: Boolean){
+
     if (expanded)
     Column(modifier = Modifier.padding(5.dp)) {
-        Text(text = "Restaurant1",
+        Text(text = "",
         style = MaterialTheme.typography.h4)
         Text(text = "Aquí va el rating y tal ya haré el " +
                 "desplegable AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
