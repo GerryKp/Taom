@@ -1,6 +1,10 @@
 package com.gerard.proyectof
 
+import android.annotation.SuppressLint
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
 import android.os.Bundle
+import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.Crossfade
@@ -16,34 +20,31 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.runtime.*
+import androidx.compose.runtime.livedata.observeAsState
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import com.gerard.proyectof.entities.AppDatabase
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.gerard.proyectof.ui.theme.ProyectofTheme
-import kotlinx.coroutines.MainScope
-import kotlinx.coroutines.currentCoroutineContext
-import kotlin.concurrent.thread
-
-var db: AppDatabase? = null
 
 class MainActivity : ComponentActivity() {
+    @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
             ProyectofTheme {
                 ComponentPreview()
-                db = AppDatabase.getDatabase(this)
             }
         }
+
     }
 }
 
-//Acordarse de mirar lo del login por si da tiempo a meterlo
 @Preview(showBackground = true)
 @Composable
 fun ComponentPreview (){
@@ -51,7 +52,11 @@ fun ComponentPreview (){
 }
 
 @Composable
-fun ComponentList (){
+fun ComponentList ()
+{
+    val viewModel:MainViewModel = viewModel()
+    viewModel.insertData()
+    var restaurantes = viewModel.restaurantes.observeAsState()
 
     LazyColumn(modifier = Modifier
         .fillMaxSize()
@@ -62,33 +67,27 @@ fun ComponentList (){
         flingBehavior = ScrollableDefaults.flingBehavior())
     {
         this.item {
-            Component()
-            Component()
-            Component()
-            Component()
-            Component()
-            Component()
-            Component()
-            Component()
-            Component()
-            Component()
+            restaurantes.value?.forEach {
+                Component(txt = it.name)
+            }
+
         }
     }
 }
 
 @Composable
-fun Component (){
+fun Component (txt: String){
     var expanded by remember { mutableStateOf(false)}
     val expandedImageMod = Modifier
         .background(MaterialTheme.colors.background)
-        .height(80.dp)
+        .height(100.dp)
         .fillMaxWidth()
 
     val nonExpandedImageMod = Modifier
         .size(120.dp)
         .clip(CircleShape)
         .background(MaterialTheme.colors.background)
-        .height(80.dp)
+        .height(100.dp)
         .width(80.dp)
 
     Crossfade(targetState = expanded, animationSpec = tween(1100)) {exp -> Boolean
@@ -104,7 +103,7 @@ fun Component (){
                         })
                     {
                         ComponentImage(expandedImageMod)
-                        ComponentText(true)
+                        ComponentText(txt,true)
                     }
                 }
                 false -> {
@@ -117,7 +116,7 @@ fun Component (){
                         })
                     {
                         ComponentImage(nonExpandedImageMod)
-                        ComponentText(false)
+                        ComponentText(txt,false)
                     }
                 }
             }
@@ -125,22 +124,25 @@ fun Component (){
 }
 
 @Composable
-fun ComponentText (expanded: Boolean){
+fun ComponentText (txt: String,expanded: Boolean){
 
     if (expanded)
     Column(modifier = Modifier.padding(5.dp)) {
-        Text(text = "",
+        Text(text = txt,
+            color = MaterialTheme.colors.primary,
         style = MaterialTheme.typography.h4)
         Text(text = "Aquí va el rating y tal ya haré el " +
                 "desplegable AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
         style = MaterialTheme.typography.body2,
         fontSize = 21.sp,
+            color = MaterialTheme.colors.primary,
         modifier = Modifier.wrapContentSize())
     }
     else
         Column(modifier = Modifier.padding(5.dp)) {
             Text(
-                text = "Restaurant1",
+                text = txt,
+                color = MaterialTheme.colors.secondary,
                 style = MaterialTheme.typography.h4
             )
             Text(
@@ -148,6 +150,7 @@ fun ComponentText (expanded: Boolean){
                         "ceocpincwncpw" +
                         "eccwecewable AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA",
                 style = MaterialTheme.typography.body2,
+                color = MaterialTheme.colors.secondary,
                 fontSize = 21.sp,
                 maxLines = 2
             )

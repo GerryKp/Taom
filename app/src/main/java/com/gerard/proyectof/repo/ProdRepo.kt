@@ -1,6 +1,7 @@
 package com.gerard.proyectof.repo
 
 import androidx.annotation.WorkerThread
+import androidx.lifecycle.LiveData
 import com.gerard.proyectof.daos.ProdDao
 import com.gerard.proyectof.entities.Productos
 import kotlinx.coroutines.flow.Flow
@@ -12,7 +13,7 @@ class ProdRepo (private val prodDao: ProdDao) {
 
     // Room executes all queries on a separate thread.
     // Observed Flow will notify the observer when the data has changed.
-    val allResId: Flow<Productos> = prodDao.getAll().asFlow()
+    val allResId: LiveData<List<Productos>> = prodDao.getAll()
 
     // By default Room runs suspend queries off the main thread, therefore, we don't need to
     // implement anything else to ensure we're not doing long running database work
@@ -20,7 +21,7 @@ class ProdRepo (private val prodDao: ProdDao) {
 
     @Suppress("RedundantSuspendModifier")
     @WorkerThread
-    suspend fun insert(prod: Productos) {
+    suspend fun insert(prod: List<Productos>) {
         prodDao.insertAll(prod)
     }
 }

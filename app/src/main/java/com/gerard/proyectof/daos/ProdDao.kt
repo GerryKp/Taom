@@ -1,21 +1,23 @@
 package com.gerard.proyectof.daos
 
+import androidx.lifecycle.LiveData
 import androidx.room.*;
 import com.gerard.proyectof.entities.Productos
 
+@Dao
 interface ProdDao {
     @Query("SELECT * FROM Productos")
-    fun getAll(): List<Productos>
+    fun getAll(): LiveData<List<Productos>>
 
     @Query("SELECT * FROM Productos WHERE id IN (:restIds)")
-    fun loadAllByIds(restIds: IntArray): List<Productos>
+    fun loadAllByIds(restIds: IntArray): LiveData<List<Productos>>
 
     @Query(
-        "SELECT * FROM Productos WHERE nombre LIKE :nombre LIMIT 1")
+        "SELECT * FROM Productos WHERE nombre LIKE :nombre")
     fun findByName(nombre: String): Productos
 
     @Insert
-    fun insertAll(vararg productos: Productos)
+    fun insertAll(productos: List<Productos>)
 
     @Delete
     fun delete(prod: Productos)

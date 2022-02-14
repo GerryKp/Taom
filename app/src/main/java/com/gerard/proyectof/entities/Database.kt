@@ -2,9 +2,11 @@ package com.gerard.proyectof.entities
 
 import android.content.Context
 import androidx.room.*
+import com.gerard.proyectof.converters.TypeConverter
 import com.gerard.proyectof.daos.*
 
 @Database(entities = [Productos::class, Restaurante::class], version = 1)
+@TypeConverters(TypeConverter::class)
 abstract class AppDatabase : RoomDatabase(){
     abstract fun prodDao(): ProdDao
     abstract fun restDao(): RestDao

@@ -5,20 +5,27 @@ import androidx.room.*;
 import com.gerard.proyectof.entities.Productos
 import com.gerard.proyectof.entities.Restaurante
 
+@Dao
 interface RestDao {
-    @Query("SELECT * FROM Restaurante")
+    @Query("SELECT * FROM Restaurantes")
     fun getAll(): LiveData<List<Restaurante>>
 
-    @Query("SELECT * FROM Restaurante WHERE id_r IN (:restIds)")
+    @Query("SELECT * FROM Restaurantes WHERE id_r IN (:restIds)")
     fun loadAllByIds(restIds: IntArray): LiveData<List<Restaurante>>
 
+    @Query("SELECT * FROM Restaurantes")
+    fun loadAll(): LiveData<List<Restaurante>>
+
     @Query(
-        "SELECT * FROM restaurante WHERE nombre LIKE :nomRes LIMIT 1"
+        "SELECT * FROM Restaurantes WHERE nombre LIKE :nomRes"
     )
     fun findByName(nomRes: String): Restaurante
 
     @Insert
-    fun insertAll(vararg rest: Restaurante)
+    fun insertOne(rest: Restaurante)
+
+    @Insert
+    fun insertAll(rest: List<Restaurante>)
 
     @Delete
     fun delete(rest: Restaurante)
