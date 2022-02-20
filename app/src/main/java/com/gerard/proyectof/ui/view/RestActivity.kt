@@ -30,14 +30,16 @@ import com.gerard.proyectof.R
 import com.gerard.proyectof.entities.Productos
 import com.gerard.proyectof.ui.theme.ProyectofTheme
 
+//Composable al que llama el controlador de vistas para crear toda la vista de los restaurantes
 @Composable
     fun RestActivity (navController: NavController){
         ComponentList()
     }
-
+    //se crea la lista de componentes
     @Composable
     fun ComponentList ()
     {
+        //Lamada a la bd para insertar los restaurantes de prueba
         val viewModel: MainViewModel = viewModel()
         viewModel.insertData()
         var restaurantes = viewModel.restaurantes.observeAsState()
@@ -58,22 +60,23 @@ import com.gerard.proyectof.ui.theme.ProyectofTheme
             }
         }
     }
-
+    //Componente báscio con imagen y texto
     @Composable
     fun Component (txt: String, desc: String?, calle: String?, mesas:Int?, prods:List<Productos>?){
         var expanded by remember { mutableStateOf(false) }
         val expandedImageMod = Modifier
             .background(MaterialTheme.colors.background)
-            .height(100.dp)
             .fillMaxWidth()
+            .height(150.dp)
+
 
         val nonExpandedImageMod = Modifier
-            .size(120.dp)
+            .size(100.dp)
             .clip(CircleShape)
             .background(MaterialTheme.colors.background)
             .height(100.dp)
             .width(80.dp)
-
+        //Animación para el componente cuando el usuario hace click en este
         Crossfade(targetState = expanded, animationSpec = tween(700,100)) { exp -> Boolean
             when (exp)
             {
@@ -107,6 +110,7 @@ import com.gerard.proyectof.ui.theme.ProyectofTheme
         }
     }
 
+    // Textos de los componentes en función del estado de la animación
     @Composable
     fun ComponentText (txt: String,desc:String?,calle:String?,expanded: Boolean,mesas: Int?, prods: List<Productos>?)
     {
@@ -150,16 +154,13 @@ import com.gerard.proyectof.ui.theme.ProyectofTheme
                 )
             }
     }
-
+    //Imagen de los componentes
     @Composable
     fun ComponentImage(modifier: Modifier){
 
-
-        //me quiero suicidar, 4 h para enontrar un método de mierda, voy colgarme del cuello pq me cago en la puta
-        // tódo para un 7 de mierda por no usar la api de google
         Image(
             painter = painterResource(R.drawable.restaurantedf),
-            contentDescription = null,
+            contentDescription = "fotorest",
             modifier = modifier
         )
 

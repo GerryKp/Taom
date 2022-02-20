@@ -7,7 +7,7 @@ import androidx.activity.compose.setContent
 import androidx.navigation.compose.rememberNavController
 import com.gerard.proyectof.ui.theme.ProyectofTheme
 import com.gerard.proyectof.ui.view.NavController
-
+//Actividad Principal
 class MainActivity : ComponentActivity() {
     @SuppressLint("CoroutineCreationDuringComposition")
     override fun onCreate(savedInstanceState: Bundle?) {

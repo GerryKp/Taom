@@ -27,6 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.tooling.preview.PreviewParameter
 import androidx.compose.ui.unit.dp
@@ -34,7 +35,8 @@ import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import com.gerard.proyectof.R
 import com.gerard.proyectof.ui.Routes
-
+//composable que se cargará nada más abrir la app
+//Mejora, hacer que la actividad se recomponga para que el teclado en pantalla no cubra los campos de texto
 @Composable
 fun LoginActivity(navController: NavController) {
 
@@ -43,13 +45,14 @@ fun LoginActivity(navController: NavController) {
 
     val passwordVisibility = remember { mutableStateOf(false) }
     val focusRequester = remember { FocusRequester() }
+    //Columna principal
       Column(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center,
             modifier = Modifier
                 .fillMaxSize()
-                .background(Color.LightGray)
-                .padding(10.dp)
+                .background(MaterialTheme.colors.background)
+                .padding(5.dp)
         ) {
             Image(painter = painterResource(id = R.drawable.logoapp), contentDescription ="logo",
                 Modifier
@@ -59,15 +62,19 @@ fun LoginActivity(navController: NavController) {
                     .width(150.dp)
                     .height(150.dp))
             Spacer(modifier = Modifier.padding(10.dp))
+          //Columna con el texto de bienvenida y los textfields para datos de usuario
             Column(horizontalAlignment = Alignment.CenterHorizontally) {
                 Text(
                     text = "Bienvenido/a, gracias por elegirnos un día más",
+                    color = MaterialTheme.colors.primary,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 2.sp
                     ),
-                    fontSize = 20.sp
+                    fontSize = 20.sp,
+                    textAlign = TextAlign.Center
                 )
+                //TextField para mail de usuario
                 Spacer(modifier = Modifier.padding(20.dp))
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     OutlinedTextField(
@@ -79,6 +86,7 @@ fun LoginActivity(navController: NavController) {
                         placeholder = { Text(text = "example@mail.com")},
                         singleLine = true,
                     )
+                    //TextField para contraseña de usuario
                     OutlinedTextField(
                         value = passwordValue.value,
                         onValueChange ={passwordValue.value = it},
@@ -102,7 +110,7 @@ fun LoginActivity(navController: NavController) {
                     )
 
                     Spacer(modifier = Modifier.padding(10.dp))
-
+                    //Botón para ir a la vista principal de restaurantes
                     Button(
                         onClick = {navController.navigate(Routes.RestAct.route){
                             launchSingleTop = true
@@ -113,10 +121,11 @@ fun LoginActivity(navController: NavController) {
                     ) {
                         Text(text = "Sign In", fontSize = 20.sp)
                     }
-
+                    //Boton para ir a la vista de registrarse
                     Spacer(modifier = Modifier.padding(20.dp))
                     Text(
                         text = "Create An Account",
+                        color = MaterialTheme.colors.primary,
                         modifier = Modifier.clickable(onClick = {
                             navController.navigate(Routes.RegisterAct.route){
                                 launchSingleTop = true

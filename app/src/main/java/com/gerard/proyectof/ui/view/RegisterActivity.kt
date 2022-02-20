@@ -30,9 +30,11 @@ import androidx.navigation.NavController
 import com.gerard.proyectof.R
 import com.gerard.proyectof.ui.Routes
 
+//Composable que contiene la vista de registro con todos sus elementos
+// mejora a futuro: separar los outlinedtextbox a composables propios
 @Composable
 fun RegisterActivity(navController: NavController) {
-
+    //Valores necesarios que se obtendrán de la base de datos
     val nameValue = remember { mutableStateOf("") }
     val emailValue = remember { mutableStateOf("") }
     val passwordValue = remember { mutableStateOf("") }
@@ -40,41 +42,42 @@ fun RegisterActivity(navController: NavController) {
 
     val passwordVisibility = remember { mutableStateOf(false) }
     val confirmPasswordVisibility = remember { mutableStateOf(false) }
-
+    //Columna principal
         Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .fillMaxHeight()
-                .background(Color.White)
-                .padding(10.dp),
+                .fillMaxSize()
+                .background(MaterialTheme.colors.background)
+                .padding(5.dp),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            Image(painter = painterResource(id = R.drawable.logoapp),"logo",
+            Image(
+                painter = painterResource(id = R.drawable.logoapp), "logo",
                 Modifier
                     .clip(
-                        RectangleShape)
+                        RectangleShape
+                    )
                     .width(150.dp)
-                    .height(150.dp))
-
-            Spacer(modifier = Modifier.padding(10.dp))
-
+                    .height(150.dp)
+            )
+            //Columna Secundaria con los campos de texto
             Column(
                 modifier = Modifier
-                    .fillMaxSize()
+                    .fillMaxSize(0.8f)
                     .scrollable(rememberScrollState(), orientation = Orientation.Vertical),
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Text(
                     text = "Sign Up", fontSize = 30.sp,
+                    color = MaterialTheme.colors.primaryVariant,
                     style = TextStyle(
                         fontWeight = FontWeight.Bold,
                         letterSpacing = 2.sp
                     )
                 )
                 Spacer(modifier = Modifier.padding(10.dp))
-
+                //TextField para el nombre del usuario
                 Column(horizontalAlignment = Alignment.CenterHorizontally) {
                     OutlinedTextField(
                         value = nameValue.value,
@@ -82,25 +85,25 @@ fun RegisterActivity(navController: NavController) {
                         label = { Text(text = "Name") },
                         placeholder = { Text(text = "Your name") },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(0.8f)
+                        modifier = Modifier.fillMaxWidth(0.9f)
                     )
-
+                    //TextField para mail de usuario
                     OutlinedTextField(
                         value = emailValue.value,
                         onValueChange = { emailValue.value = it },
                         label = { Text(text = "Email Address") },
                         placeholder = { Text(text = "example@mail.com") },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(0.8f)
+                        modifier = Modifier.fillMaxWidth(0.9f)
                     )
-
+                    //TextField para contraseña
                     OutlinedTextField(
                         value = passwordValue.value,
                         onValueChange = { passwordValue.value = it },
                         label = { Text(text = "Password") },
                         placeholder = { Text(text = "Password") },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(0.8f),
+                        modifier = Modifier.fillMaxWidth(0.9f),
                         trailingIcon = {
                             IconButton(onClick = {
                                 passwordVisibility.value = !passwordVisibility.value
@@ -115,20 +118,20 @@ fun RegisterActivity(navController: NavController) {
                         visualTransformation = if (passwordVisibility.value) VisualTransformation.None
                         else PasswordVisualTransformation()
                     )
-
+                    //TextField para confirmar contraseña
                     OutlinedTextField(
                         value = confirmPasswordValue.value,
                         onValueChange = { confirmPasswordValue.value = it },
                         label = { Text(text = "Confirm Password") },
                         placeholder = { Text(text = "Confirm Password") },
                         singleLine = true,
-                        modifier = Modifier.fillMaxWidth(0.8f),
+                        modifier = Modifier.fillMaxWidth(0.9f),
                         trailingIcon = {
                             IconButton(onClick = {
                                 confirmPasswordVisibility.value = !confirmPasswordVisibility.value
                             }) {
                                 Icon(
-                                    imageVector = if (passwordVisibility.value) Icons.Default.VisibilityOff else Icons.Default.Visibility,
+                                    imageVector = if (confirmPasswordVisibility.value) Icons.Default.VisibilityOff else Icons.Default.Visibility,
 
                                     "aaaaa",
                                     tint = if (confirmPasswordVisibility.value) MaterialTheme.colors.primary else Color.Gray
@@ -139,24 +142,28 @@ fun RegisterActivity(navController: NavController) {
                         else PasswordVisualTransformation()
                     )
                     Spacer(modifier = Modifier.padding(10.dp))
-
-                    Button(onClick = { navHostController.navigate(Routes.RestAct.route)},
+                    //Botón para registrarse y dar paso a la vista de restaurantes
+                    Button(
+                        onClick = { navHostController.navigate(Routes.RestAct.route) },
                         modifier = Modifier
                             .fillMaxWidth(0.8f)
-                            .height(50.dp)) {
+                            .height(50.dp).background(MaterialTheme.colors.primaryVariant)
+                    ) {
                         Text(text = "Sign Up", fontSize = 20.sp)
                     }
+                    //Botón para navegar a la vista de login
                     Spacer(modifier = Modifier.padding(20.dp))
                     Text(
                         text = "Login Instead",
-                            modifier = Modifier.clickable(onClick = {
-                                navHostController.navigate(Routes.LoginAct.route)
-                            })
+                        color = MaterialTheme.colors.primaryVariant,
+                        modifier = Modifier.clickable(onClick = {
+                            navHostController.navigate(Routes.LoginAct.route)
+                        })
                     )
                     Spacer(modifier = Modifier.padding(20.dp))
                 }
 
             }
         }
-    }
+}
 
