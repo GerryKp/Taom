@@ -1,6 +1,6 @@
 package com.gerard.proyectof.entities
 import androidx.room.*
-
+//Data class de productos
 @Entity(foreignKeys = [ForeignKey(entity = Restaurante::class,
     parentColumns = arrayOf("id_r"),
     childColumns = arrayOf("idRest"),

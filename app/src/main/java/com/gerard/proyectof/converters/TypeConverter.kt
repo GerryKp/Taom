@@ -9,11 +9,11 @@ import com.google.gson.reflect.TypeToken
 import java.lang.reflect.Type
 import androidx.room.TypeConverter
 import java.io.ByteArrayOutputStream
-
+//Clase para convertir las listas de productos de los restuarantes a gson y que room las pueda almacenar
 class TypeConverter {
 
     @TypeConverter
-    fun fromCountryLangList(countryLang: List<Productos?>?): String? {
+    fun fromProductList(countryLang: List<Productos?>?): String? {
         if (countryLang == null) {
             return null
         }
@@ -32,6 +32,8 @@ class TypeConverter {
         return gson.fromJson(countryLangString, type)
     }
 
+    // Esos 2 conversores ya no hacen falta, pero los dejo implementados por si las moscas
+    //Servían para guardar imágenes pero dan más problemas que veces funcionan
     @TypeConverter
     fun fromBitmap(bitmap: Bitmap): ByteArray {
         val outputStream = ByteArrayOutputStream()

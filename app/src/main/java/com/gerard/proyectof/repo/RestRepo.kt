@@ -11,6 +11,7 @@ import kotlinx.coroutines.flow.toList
 
 // Declares the DAO as a private property in the constructor. Pass in the DAO
 // instead of the whole database, because you only need access to the DAO
+//Clase para insertar datos en la bd
 class RestRepo(private val restdao: RestDao) {
 
     // Room executes all queries on a separate thread.

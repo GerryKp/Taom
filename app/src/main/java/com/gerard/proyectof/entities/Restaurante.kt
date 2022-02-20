@@ -3,7 +3,7 @@ package com.gerard.proyectof.entities
 import android.graphics.Bitmap
 import androidx.room.*
 import androidx.room.ColumnInfo.*
-
+//Data class de lso restaurantes
 @Entity (tableName = "Restaurantes")
 data class Restaurante(
     @PrimaryKey(autoGenerate = true)

@@ -6,7 +6,7 @@ import com.gerard.proyectof.daos.ProdDao
 import com.gerard.proyectof.entities.Productos
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.asFlow
-
+//Clase para insertar datos en la bd
 class ProdRepo (private val prodDao: ProdDao) {
     // Declares the DAO as a private property in the constructor. Pass in the DAO
     // instead of the whole database, because you only need access to the DAO

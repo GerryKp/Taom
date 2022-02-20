@@ -16,7 +16,7 @@ abstract class AppDatabase : RoomDatabase(){
         // same time.
         @Volatile
         private var INSTANCE: AppDatabase? = null
-
+        //Function that gest a single database connection
         fun getDatabase(context: Context): AppDatabase {
             // if the INSTANCE is not null, then return it,
             // if it is, then create the database
